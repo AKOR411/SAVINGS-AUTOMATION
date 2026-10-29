@@ -98,7 +98,7 @@ def main():
     app.add_handler(CommandHandler("status", status))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_savings))
 
-    # Reminders
+    # Reminders configured for East Africa Time (EAT / UTC+3)
     app.job_queue.run_daily(
         send_reminder, 
         time=datetime.time(hour=9, minute=0, tzinfo=datetime.timezone(datetime.timedelta(hours=3)))
@@ -110,7 +110,7 @@ def main():
 
     print("Bot configured successfully. Launching web service...")
     
-    # CHANGE THIS LINE ONLY: This creates an empty free web server alongside your bot
+    # Corrected Webhook configurations matching Render parameters
     app.run_webhook(
         listen="0.0.0.0",
         port=10000,
