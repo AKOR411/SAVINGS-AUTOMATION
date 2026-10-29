@@ -98,20 +98,25 @@ def main():
     app.add_handler(CommandHandler("status", status))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_savings))
 
-    # Reminder 1: Morning nudge at 09:00 AM Local Time
+    # Reminders
     app.job_queue.run_daily(
         send_reminder, 
-        time=datetime.time(hour=9, minute=0, tzinfo=datetime.timezone(datetime.timedelta(hours=3))) # EAT (UTC+3)
+        time=datetime.time(hour=9, minute=0, tzinfo=datetime.timezone(datetime.timedelta(hours=3)))
     )
-
-    # Reminder 2: Evening nudge at 05:00 PM (17:00) Local Time
     app.job_queue.run_daily(
         send_reminder, 
-        time=datetime.time(hour=17, minute=0, tzinfo=datetime.timezone(datetime.timedelta(hours=3))) # EAT (UTC+3)
+        time=datetime.time(hour=17, minute=0, tzinfo=datetime.timezone(datetime.timedelta(hours=3)))
     )
 
-    print("Bot configured successfully. Running reminders at 9:00 AM and 5:00 PM EAT...")
-    app.run_polling()
+    print("Bot configured successfully. Launching web service...")
+    
+    # CHANGE THIS LINE ONLY: This creates an empty free web server alongside your bot
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=10000,
+        url_path=TOKEN,
+        webhook_url=f"https://onrender.com{TOKEN}"
+    )
 
 if __name__ == '__main__':
     main()
